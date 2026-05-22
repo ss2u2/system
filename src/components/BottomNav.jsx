@@ -11,20 +11,22 @@ export default function BottomNav({ activeTab, setActiveTab }) {
 
   return (
     <div className="bottom-nav">
-      {tabs.map(tab => {
-        const IconComponent = tab.icon;
-        const isActive = activeTab === tab.id;
-        return (
-          <div
-            key={tab.id}
-            className={`nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            <IconComponent />
-            <span>{tab.label}</span>
-          </div>
-        );
-      })}
+      <div className="content-wrapper" style={{ justifyContent: 'space-around', width: '100%' }}>
+        {tabs.map(tab => {
+          const IconComponent = tab.icon;
+          const isActive = activeTab === tab.id;
+          return (
+            <div
+              key={tab.id}
+              className={`nav-item ${isActive ? 'active' : ''}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              <IconComponent />
+              <span>{tab.label}</span>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

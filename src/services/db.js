@@ -147,7 +147,11 @@ export const store = {
     return state;
   },
   setState(newState, fromRemote = false) {
-    state = { ...state, ...newState };
+    if (newState && newState._reset) {
+      state = JSON.parse(JSON.stringify(defaultState));
+    } else {
+      state = { ...state, ...newState };
+    }
     
     // Save to local cache
     try {

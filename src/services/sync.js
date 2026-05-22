@@ -298,24 +298,24 @@ export async function pullSyncData() {
     const newState = {};
 
     if (tasksData) {
-      newState.tasks = tasksData.map(t => ({ id: t.id, name: t.name, cat: t.cat, done: t.done }));
+      newState.tasks = tasksData.map(t => ({ id: Number(t.id), name: t.name, cat: t.cat, done: t.done }));
     }
     if (sessionsData) {
-      newState.sessions = sessionsData.map(s => ({ id: s.id, name: s.name, icon: s.icon, color: s.color, steps: s.steps, open: false }));
+      newState.sessions = sessionsData.map(s => ({ id: Number(s.id), name: s.name, icon: s.icon, color: s.color, steps: s.steps, open: false }));
     }
     if (goalsData) {
-      newState.weekly = goalsData.filter(g => g.type === 'weekly').map(g => ({ id: g.id, name: g.name, target: g.target, current: g.current }));
-      newState.monthly = goalsData.filter(g => g.type === 'monthly').map(g => ({ id: g.id, name: g.name, target: g.target, current: g.current }));
-      newState.static = goalsData.filter(g => g.type === 'static').map(g => ({ id: g.id, name: g.name, emoji: g.emoji, note: g.note, cat: g.cat, progress: g.progress }));
+      newState.weekly = goalsData.filter(g => g.type === 'weekly').map(g => ({ id: Number(g.id), name: g.name, target: g.target, current: g.current }));
+      newState.monthly = goalsData.filter(g => g.type === 'monthly').map(g => ({ id: Number(g.id), name: g.name, target: g.target, current: g.current }));
+      newState.static = goalsData.filter(g => g.type === 'static').map(g => ({ id: Number(g.id), name: g.name, emoji: g.emoji, note: g.note, cat: g.cat, progress: g.progress }));
     }
     if (journalsData) {
-      newState.journals = journalsData.map(j => ({ id: j.id, title: j.title, content: j.content }));
+      newState.journals = journalsData.map(j => ({ id: Number(j.id), title: j.title, content: j.content }));
     }
     if (routinesData) {
-      newState.workoutRoutines = routinesData.map(r => ({ id: r.id, name: r.name, exercises: r.exercises }));
+      newState.workoutRoutines = routinesData.map(r => ({ id: Number(r.id), name: r.name, exercises: r.exercises }));
     }
     if (logsData) {
-      newState.workoutLogs = logsData.map(l => ({ id: l.id, name: l.name, duration: l.duration, exercises: l.exercises, created_at: l.created_at }));
+      newState.workoutLogs = logsData.map(l => ({ id: Number(l.id), name: l.name, duration: l.duration, exercises: l.exercises, created_at: l.created_at }));
     }
     if (profileData) {
       newState.streak = profileData.streak;

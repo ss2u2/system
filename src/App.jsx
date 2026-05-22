@@ -64,7 +64,7 @@ function AuthenticatedApp() {
   }, []);
 
   return (
-    <div className="phone-container">
+    <div className="app-container">
       {/* 1. Header Bar */}
       <TopBar onOpenSyncModal={() => setIsSyncModalOpen(true)} />
 

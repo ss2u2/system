@@ -25,21 +25,21 @@ export function setupRealtimeSubscription(userId) {
 
         if (payload.eventType === 'INSERT') {
           const newItem = mapRow(payload.new);
-          if (!currentItems.some(item => item.id === newItem.id)) {
+          if (!currentItems.some(item => Number(item.id) === Number(newItem.id))) {
             store.setState({ [stateKey]: [...currentItems, newItem] }, true);
           }
         } else if (payload.eventType === 'UPDATE') {
           const updatedItem = mapRow(payload.new);
           const updatedItems = currentItems.map(item =>
-            item.id === updatedItem.id ? { ...item, ...updatedItem } : item
+            Number(item.id) === Number(updatedItem.id) ? { ...item, ...updatedItem } : item
           );
-          if (!currentItems.some(item => item.id === updatedItem.id)) {
+          if (!currentItems.some(item => Number(item.id) === Number(updatedItem.id))) {
             updatedItems.push(updatedItem);
           }
           store.setState({ [stateKey]: updatedItems }, true);
         } else if (payload.eventType === 'DELETE') {
-          const deletedId = payload.old.id;
-          const updatedItems = currentItems.filter(item => item.id !== deletedId);
+          const deletedId = Number(payload.old.id);
+          const updatedItems = currentItems.filter(item => Number(item.id) !== deletedId);
           store.setState({ [stateKey]: updatedItems }, true);
         }
       }
@@ -48,7 +48,7 @@ export function setupRealtimeSubscription(userId) {
 
   // 1. Subscribe to Tasks
   handleTableChange('tasks', 'tasks', row => ({
-    id: row.id,
+    id: Number(row.id),
     name: row.name,
     cat: row.cat,
     done: row.done
@@ -56,7 +56,7 @@ export function setupRealtimeSubscription(userId) {
 
   // 2. Subscribe to Sessions
   handleTableChange('sessions', 'sessions', row => ({
-    id: row.id,
+    id: Number(row.id),
     name: row.name,
     icon: row.icon,
     color: row.color,
@@ -66,14 +66,14 @@ export function setupRealtimeSubscription(userId) {
 
   // 3. Subscribe to Workout Routines
   handleTableChange('workout_routines', 'workoutRoutines', row => ({
-    id: row.id,
+    id: Number(row.id),
     name: row.name,
     exercises: row.exercises
   }));
 
   // 4. Subscribe to Workout Logs
   handleTableChange('workout_logs', 'workoutLogs', row => ({
-    id: row.id,
+    id: Number(row.id),
     name: row.name,
     duration: row.duration,
     exercises: row.exercises,
@@ -82,7 +82,7 @@ export function setupRealtimeSubscription(userId) {
 
   // 5. Subscribe to Journals
   handleTableChange('journals', 'journals', row => ({
-    id: row.id,
+    id: Number(row.id),
     title: row.title,
     content: row.content
   }));
@@ -107,7 +107,7 @@ export function setupRealtimeSubscription(userId) {
       const mapGoal = (row) => {
         if (row.type === 'static') {
           return {
-            id: row.id,
+            id: Number(row.id),
             name: row.name,
             emoji: row.emoji,
             note: row.note,
@@ -116,7 +116,7 @@ export function setupRealtimeSubscription(userId) {
           };
         }
         return {
-          id: row.id,
+          id: Number(row.id),
           name: row.name,
           target: row.target,
           current: row.current
@@ -129,7 +129,7 @@ export function setupRealtimeSubscription(userId) {
         if (!listKey) return;
         const items = currentState[listKey] || [];
         const newItem = mapGoal(row);
-        if (!items.some(item => item.id === newItem.id)) {
+        if (!items.some(item => Number(item.id) === Number(newItem.id))) {
           store.setState({ [listKey]: [...items, newItem] }, true);
         }
       } else if (payload.eventType === 'UPDATE') {
@@ -139,20 +139,20 @@ export function setupRealtimeSubscription(userId) {
         const items = currentState[listKey] || [];
         const updatedItem = mapGoal(row);
         const updatedItems = items.map(item =>
-          item.id === updatedItem.id ? { ...item, ...updatedItem } : item
+          Number(item.id) === Number(updatedItem.id) ? { ...item, ...updatedItem } : item
         );
-        if (!items.some(item => item.id === updatedItem.id)) {
+        if (!items.some(item => Number(item.id) === Number(updatedItem.id))) {
           updatedItems.push(updatedItem);
         }
         store.setState({ [listKey]: updatedItems }, true);
       } else if (payload.eventType === 'DELETE') {
-        const deletedId = payload.old.id;
+        const deletedId = Number(payload.old.id);
         // Since we don't receive type on delete (unless replica identity is FULL),
         // we can filter out from weekly, monthly, and static goals safely since IDs are unique.
         store.setState({
-          weekly: (currentState.weekly || []).filter(item => item.id !== deletedId),
-          monthly: (currentState.monthly || []).filter(item => item.id !== deletedId),
-          static: (currentState.static || []).filter(item => item.id !== deletedId)
+          weekly: (currentState.weekly || []).filter(item => Number(item.id) !== deletedId),
+          monthly: (currentState.monthly || []).filter(item => Number(item.id) !== deletedId),
+          static: (currentState.static || []).filter(item => Number(item.id) !== deletedId)
         }, true);
       }
     }
