@@ -37,7 +37,7 @@ function RingTimer({ timeLeft, total }) {
   return (
     <svg width="140" height="140" viewBox="0 0 140 140">
       {/* track */}
-      <circle cx="70" cy="70" r={R} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="8" />
+      <circle cx="70" cy="70" r={R} fill="none" stroke="var(--bg4)" strokeWidth="8" />
       {/* fill */}
       <circle
         cx="70" cy="70" r={R}
@@ -51,8 +51,8 @@ function RingTimer({ timeLeft, total }) {
       />
       <defs>
         <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#7c6af7" />
-          <stop offset="100%" stopColor="#a594ff" />
+          <stop offset="0%" stopColor="var(--accent)" />
+          <stop offset="100%" stopColor="var(--accent2)" />
         </linearGradient>
       </defs>
     </svg>
@@ -145,14 +145,12 @@ export default function SessionRunner({ state, sessionIndex, onClose }) {
     position: 'fixed',
     inset: 0,
     zIndex: 9999,
-    background: 'rgba(10,10,13,0.96)',
-    backdropFilter: 'blur(24px)',
-    WebkitBackdropFilter: 'blur(24px)',
+    background: 'var(--bg)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: "'DM Sans', system-ui, sans-serif",
+    fontFamily: "var(--font-sans)",
     padding: '24px 20px',
     animation: 'runnerFadeIn 0.3s ease both',
   };
@@ -175,22 +173,22 @@ export default function SessionRunner({ state, sessionIndex, onClose }) {
         `}</style>
         <div style={{ ...card, alignItems: 'center', textAlign: 'center', gap: 16 }}>
           <div style={{ animation: 'confettiBounce 1s ease infinite' }}>
-            <IconConfetti size={64} color="#4ade80" />
+            <IconConfetti size={64} color="var(--green)" />
           </div>
-          <h2 style={{ margin: 0, fontSize: 26, fontWeight: 700, color: '#f0eff5', letterSpacing: '-0.5px' }}>
+          <h2 style={{ margin: 0, fontSize: 26, fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.5px', fontFamily: 'var(--font-serif)' }}>
             Session Complete!
           </h2>
-          <p style={{ margin: 0, fontSize: 14, color: '#9b9aab', lineHeight: 1.6, maxWidth: 300 }}>
+          <p style={{ margin: 0, fontSize: 14, color: 'var(--text2)', lineHeight: 1.6, maxWidth: 300 }}>
             Amazing work. You've completed all {session.steps.length} steps of "{session.name}".
           </p>
           <button
             onClick={onClose}
             style={{
               marginTop: 8, padding: '14px 48px',
-              background: 'linear-gradient(135deg,#7c6af7,#a594ff)',
+              background: 'linear-gradient(135deg, var(--accent), var(--accent2))',
               border: 'none', borderRadius: 14, color: '#fff',
               fontSize: 15, fontWeight: 700, cursor: 'pointer',
-              boxShadow: '0 8px 24px rgba(124,106,247,0.4)',
+              boxShadow: '0 8px 24px rgba(204,91,54,0.15)',
             }}
           >
             Done
@@ -207,16 +205,16 @@ export default function SessionRunner({ state, sessionIndex, onClose }) {
     <div style={overlay}>
       <style>{`
         @keyframes runnerFadeIn { from { opacity:0; transform:scale(0.96) } to { opacity:1; transform:scale(1) } }
-        .runner-ctrl-btn:hover { background: rgba(255,255,255,0.1) !important; }
-        .runner-pause-btn:hover { background: rgba(124,106,247,0.25) !important; }
-        .runner-skip-btn:hover { background: rgba(255,255,255,0.08) !important; }
+        .runner-ctrl-btn:hover { background: var(--bg4) !important; color: var(--text) !important; }
+        .runner-pause-btn:hover { background: var(--accent-bg) !important; filter: brightness(0.95); }
+        .runner-skip-btn:hover { background: var(--bg4) !important; color: var(--text) !important; }
       `}</style>
 
       <div style={card}>
 
         {/* ── Top bar ── */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
-          <span style={{ fontSize: 13, color: '#5c5b6e', fontWeight: 500, letterSpacing: 0.5 }}>
+          <span style={{ fontSize: 13, color: 'var(--text3)', fontWeight: 500, letterSpacing: 0.5 }}>
             STEP {currentStepIdx + 1} OF {session.steps.length}
           </span>
           <div style={{ display: 'flex', gap: 8 }}>
@@ -226,8 +224,8 @@ export default function SessionRunner({ state, sessionIndex, onClose }) {
               title={soundEnabled ? 'Mute chime' : 'Unmute chime'}
               style={{
                 width: 34, height: 34, borderRadius: 10,
-                background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)',
-                color: '#9b9aab', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'var(--bg3)', border: '1px solid var(--border)',
+                color: 'var(--text2)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 transition: 'background 0.15s',
               }}
             >
@@ -239,8 +237,8 @@ export default function SessionRunner({ state, sessionIndex, onClose }) {
               title="Exit session"
               style={{
                 width: 34, height: 34, borderRadius: 10,
-                background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)',
-                color: '#f87171', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'var(--bg3)', border: '1px solid var(--border)',
+                color: 'var(--red)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 transition: 'background 0.15s',
               }}
             >
@@ -251,10 +249,10 @@ export default function SessionRunner({ state, sessionIndex, onClose }) {
 
         {/* ── Session & Step name ── */}
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <div style={{ fontSize: 12, color: '#5c5b6e', fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 8 }}>
+          <div style={{ fontSize: 12, color: 'var(--text3)', fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 8 }}>
             {session.name}
           </div>
-          <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#f0eff5', letterSpacing: '-0.3px' }}>
+          <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.3px', fontFamily: 'var(--font-serif)' }}>
             {step.name}
           </h2>
         </div>
@@ -268,12 +266,12 @@ export default function SessionRunner({ state, sessionIndex, onClose }) {
             alignItems: 'center', justifyContent: 'center',
           }}>
             <span style={{
-              fontSize: 34, fontWeight: 700, color: '#f0eff5',
-              fontFamily: "'DM Mono', monospace", letterSpacing: '-1px',
+              fontSize: 34, fontWeight: 700, color: 'var(--text)',
+              fontFamily: "var(--font-mono)", letterSpacing: '-1px',
             }}>
               {fmt(timeLeft)}
             </span>
-            <span style={{ fontSize: 11, color: '#5c5b6e', marginTop: 2 }}>
+            <span style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>
               {isRunning ? 'running' : 'paused'}
             </span>
           </div>
@@ -286,9 +284,9 @@ export default function SessionRunner({ state, sessionIndex, onClose }) {
             onClick={togglePause}
             style={{
               flex: 1, padding: '13px 0',
-              background: 'rgba(124,106,247,0.15)',
-              border: '1px solid rgba(124,106,247,0.35)',
-              borderRadius: 14, color: '#a594ff',
+              background: 'var(--accent-bg)',
+              border: '1px solid var(--accent2)',
+              borderRadius: 14, color: 'var(--accent)',
               fontSize: 14, fontWeight: 600, cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
               transition: 'background 0.15s', fontFamily: 'inherit',
@@ -301,9 +299,9 @@ export default function SessionRunner({ state, sessionIndex, onClose }) {
             onClick={handleSkip}
             style={{
               flex: 1, padding: '13px 0',
-              background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: 14, color: '#9b9aab',
+              background: 'var(--bg3)',
+              border: '1px solid var(--border)',
+              borderRadius: 14, color: 'var(--text2)',
               fontSize: 14, fontWeight: 600, cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
               transition: 'background 0.15s', fontFamily: 'inherit',
@@ -323,10 +321,10 @@ export default function SessionRunner({ state, sessionIndex, onClose }) {
                 height: 8,
                 borderRadius: 4,
                 background: s.done
-                  ? '#4ade80'
+                  ? 'var(--green)'
                   : idx === currentStepIdx
-                  ? 'linear-gradient(90deg,#7c6af7,#a594ff)'
-                  : 'rgba(255,255,255,0.1)',
+                  ? 'linear-gradient(90deg, var(--accent), var(--accent2))'
+                  : 'var(--bg4)',
                 transition: 'all 0.3s ease',
               }}
             />

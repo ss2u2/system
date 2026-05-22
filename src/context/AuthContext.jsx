@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../services/supabase';
 import { pullSyncData } from '../services/sync';
 import { store } from '../services/db';
+import { setupRealtimeSubscription, cleanupRealtimeSubscription } from '../services/realtime';
 
 const AuthContext = createContext(null);
 
@@ -22,6 +23,7 @@ export function AuthProvider({ children }) {
       setUser(session?.user ?? null);
       if (session?.user) {
         loadUserData();
+        setupRealtimeSubscription(session.user.id);
       }
     });
 
@@ -33,12 +35,14 @@ export function AuthProvider({ children }) {
 
         if (event === 'SIGNED_IN' && session?.user) {
           await loadUserData();
+          setupRealtimeSubscription(session.user.id);
         }
 
         if (event === 'SIGNED_OUT') {
           // Clear local state so a different user doesn't see stale data
           localStorage.removeItem('system_app_state');
-          store.setState({ _reset: true });
+          store.setState({ _reset: true }, true);
+          cleanupRealtimeSubscription();
         }
       }
     );
@@ -51,7 +55,7 @@ export function AuthProvider({ children }) {
     try {
       const cloudState = await pullSyncData();
       if (cloudState) {
-        store.setState(cloudState);
+        store.setState(cloudState, true);
       }
     } catch (err) {
       console.warn('Could not pull cloud data on sign-in:', err.message);

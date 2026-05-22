@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import AuthScreen from './components/AuthScreen';
 import TopBar from './components/TopBar';
@@ -11,6 +11,9 @@ import SessionRunner from './views/SessionRunner';
 import WorkoutRunner from './views/WorkoutRunner';
 import SyncConfig from './components/SyncConfig';
 import { store } from './services/db';
+
+export const ThemeContext = createContext();
+export const useTheme = () => useContext(ThemeContext);
 
 /* ─── Loading splash shown while Supabase restores the session ─── */
 function LoadingSplash() {
@@ -138,9 +141,26 @@ function AuthGate() {
 
 /* ─── Root export ─── */
 export default function App() {
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    if (saved) return saved;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(t => t === 'light' ? 'dark' : 'light');
+  };
+
   return (
     <AuthProvider>
-      <AuthGate />
+      <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <AuthGate />
+      </ThemeContext.Provider>
     </AuthProvider>
   );
 }

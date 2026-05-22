@@ -73,9 +73,14 @@ export default function TasksView({ state, onStartSession }) {
   };
 
   const handleDeleteSession = (index) => {
-    if (window.confirm(`Delete "${state.sessions[index].name}"?`)) {
+    const sessionToDelete = state.sessions[index];
+    if (window.confirm(`Delete "${sessionToDelete.name}"?`)) {
       const updated = state.sessions.filter((_, idx) => idx !== index);
-      store.setState({ sessions: updated });
+      const deletedIds = {
+        ...(state.deletedIds || {}),
+        sessions: [...(state.deletedIds?.sessions || []), sessionToDelete.id]
+      };
+      store.setState({ sessions: updated, deletedIds });
     }
   };
 

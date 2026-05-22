@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IconCloudCheck, IconLogout, IconUser, IconChevronDown } from '@tabler/icons-react';
+import { IconCloudCheck, IconLogout, IconUser, IconChevronDown, IconSun, IconMoon } from '@tabler/icons-react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../App';
 
 export default function TopBar({ onOpenSyncModal }) {
   const [dateStr, setDateStr] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const { user, signOut, loadingData } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const now = new Date();
@@ -50,27 +52,43 @@ export default function TopBar({ onOpenSyncModal }) {
 
   return (
     <div className="topbar">
-      <div className="logo">
-        sys<span>tem</span>
+      <div className="logo" style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', fontWeight: '700' }}>
+        sys<span style={{ color: 'var(--accent)' }}>tem</span>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <div className="topdate">{dateStr}</div>
 
         {/* Sync indicator */}
         {loadingData && (
           <div style={{
             display: 'flex', alignItems: 'center', gap: 6,
-            fontSize: 11, color: '#5c5b6e',
+            fontSize: 11, color: 'var(--text3)',
           }}>
             <div style={{
               width: 6, height: 6, borderRadius: '50%',
-              background: '#7c6af7',
+              background: 'var(--accent)',
               animation: 'topbarPulse 1.2s ease-in-out infinite',
             }} />
             Syncing…
           </div>
         )}
+
+        {/* Theme Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+          style={{
+            width: 32, height: 32, borderRadius: 10,
+            background: 'none', border: '1px solid var(--border)',
+            color: 'var(--text2)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'all 0.2s', padding: 0,
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--border2)'; e.currentTarget.style.color = 'var(--text)'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text2)'; }}
+        >
+          {theme === 'light' ? <IconMoon size={15} /> : <IconSun size={15} />}
+        </button>
 
         {/* User avatar button */}
         {user && (
@@ -80,18 +98,18 @@ export default function TopBar({ onOpenSyncModal }) {
               onClick={() => setMenuOpen(v => !v)}
               style={{
                 display: 'flex', alignItems: 'center', gap: 7,
-                background: menuOpen ? '#1e1e22' : '#17171a',
-                border: '1px solid #2e2e36',
-                borderRadius: 10, padding: '5px 10px 5px 6px',
+                background: menuOpen ? 'var(--bg3)' : 'var(--bg2)',
+                border: '1px solid var(--border)',
+                borderRadius: 10, padding: '4px 8px 4px 4px',
                 cursor: 'pointer', transition: 'all 0.2s',
               }}
-              onMouseEnter={e => e.currentTarget.style.borderColor = '#3a3a45'}
-              onMouseLeave={e => { if (!menuOpen) e.currentTarget.style.borderColor = '#2e2e36'; }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--border2)'}
+              onMouseLeave={e => { if (!menuOpen) e.currentTarget.style.borderColor = 'var(--border)'; }}
             >
               {/* Avatar */}
               <div style={{
                 width: 24, height: 24, borderRadius: '50%',
-                background: 'linear-gradient(135deg, #7c6af7, #a594ff)',
+                background: 'linear-gradient(135deg, var(--accent), var(--accent2))',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: 10, fontWeight: 700, color: '#fff', flexShrink: 0,
                 overflow: 'hidden',
@@ -103,11 +121,11 @@ export default function TopBar({ onOpenSyncModal }) {
               </div>
 
               {/* Sync dot */}
-              <IconCloudCheck size={13} style={{ color: '#4ade80' }} />
+              <IconCloudCheck size={13} style={{ color: 'var(--green)' }} />
               <IconChevronDown
                 size={12}
                 style={{
-                  color: '#5c5b6e',
+                  color: 'var(--text3)',
                   transition: 'transform 0.2s',
                   transform: menuOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                 }}
@@ -118,20 +136,20 @@ export default function TopBar({ onOpenSyncModal }) {
             {menuOpen && (
               <div style={{
                 position: 'absolute', top: 'calc(100% + 8px)', right: 0,
-                background: '#17171a', border: '1px solid #2e2e36',
+                background: 'var(--bg2)', border: '1px solid var(--border)',
                 borderRadius: 12, padding: 6, minWidth: 220,
-                boxShadow: '0 16px 40px rgba(0,0,0,0.6)',
+                boxShadow: '0 10px 25px rgba(0,0,0,0.08)',
                 zIndex: 200,
                 animation: 'menuSlideIn 0.15s ease',
               }}>
                 {/* User info header */}
                 <div style={{
-                  padding: '10px 12px 12px', borderBottom: '1px solid #1e1e22', marginBottom: 4,
+                  padding: '10px 12px 12px', borderBottom: '1px solid var(--border)', marginBottom: 4,
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <div style={{
                       width: 36, height: 36, borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #7c6af7, #a594ff)',
+                      background: 'linear-gradient(135deg, var(--accent), var(--accent2))',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: 14, fontWeight: 700, color: '#fff', flexShrink: 0,
                       overflow: 'hidden',
@@ -142,12 +160,12 @@ export default function TopBar({ onOpenSyncModal }) {
                       }
                     </div>
                     <div>
-                      <div style={{ fontSize: 13, fontWeight: 600, color: '#f0eff5', maxWidth: 150, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {getDisplayName()}
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-                        <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', flexShrink: 0 }} />
-                        <span style={{ fontSize: 11, color: '#5c5b6e' }}>Synced to cloud</span>
+                        <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--green)', flexShrink: 0 }} />
+                        <span style={{ fontSize: 11, color: 'var(--text3)' }}>Synced to cloud</span>
                       </div>
                     </div>
                   </div>
@@ -159,11 +177,11 @@ export default function TopBar({ onOpenSyncModal }) {
                   style={{
                     width: '100%', display: 'flex', alignItems: 'center', gap: 9,
                     padding: '9px 12px', borderRadius: 8, border: 'none',
-                    background: 'none', color: '#9b9aab', fontSize: 13, cursor: 'pointer',
+                    background: 'none', color: 'var(--text2)', fontSize: 13, cursor: 'pointer',
                     transition: 'all 0.15s', fontFamily: 'inherit', textAlign: 'left',
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.background = '#1e1e22'; e.currentTarget.style.color = '#f0eff5'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = '#9b9aab'; }}
+                  onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg3)'; e.currentTarget.style.color = 'var(--text)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = 'var(--text2)'; }}
                 >
                   <IconUser size={15} />
                   Account Details
@@ -175,10 +193,10 @@ export default function TopBar({ onOpenSyncModal }) {
                   style={{
                     width: '100%', display: 'flex', alignItems: 'center', gap: 9,
                     padding: '9px 12px', borderRadius: 8, border: 'none',
-                    background: 'none', color: '#f87171', fontSize: 13, cursor: 'pointer',
+                    background: 'none', color: 'var(--red)', fontSize: 13, cursor: 'pointer',
                     transition: 'all 0.15s', fontFamily: 'inherit', textAlign: 'left',
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.background = '#2a0f0f'; }}
+                  onMouseEnter={e => { e.currentTarget.style.background = 'var(--red-bg)'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'none'; }}
                 >
                   <IconLogout size={15} />

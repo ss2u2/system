@@ -8,9 +8,14 @@ export default function WorkoutsView({ state, onStartWorkout }) {
   const [routineRawInput, setRoutineRawInput] = useState('');
 
   const handleDeleteRoutine = (index) => {
-    if (window.confirm(`Delete workout routine "${state.workoutRoutines[index].name}"?`)) {
+    const routineToDelete = state.workoutRoutines[index];
+    if (window.confirm(`Delete workout routine "${routineToDelete.name}"?`)) {
       const updated = state.workoutRoutines.filter((_, i) => i !== index);
-      store.setState({ workoutRoutines: updated });
+      const deletedIds = {
+        ...(state.deletedIds || {}),
+        workoutRoutines: [...(state.deletedIds?.workoutRoutines || []), routineToDelete.id]
+      };
+      store.setState({ workoutRoutines: updated, deletedIds });
     }
   };
 

@@ -16,8 +16,8 @@ import {
 function Alert({ type, msg }) {
   if (!msg) return null;
   const styles = {
-    error: { bg: '#2a0f0f', border: '#f87171', color: '#f87171' },
-    success: { bg: '#0d2a1a', border: '#4ade80', color: '#4ade80' },
+    error: { bg: 'var(--red-bg)', border: 'var(--red)', color: 'var(--red)' },
+    success: { bg: 'var(--green-bg)', border: 'var(--green)', color: 'var(--green)' },
   };
   const s = styles[type];
   return (
@@ -39,7 +39,7 @@ function PasswordInput({ value, onChange, placeholder, autoComplete, id }) {
   const [show, setShow] = useState(false);
   return (
     <div style={{ position: 'relative' }}>
-      <IconLock size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#5c5b6e' }} />
+      <IconLock size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text3)' }} />
       <input
         id={id}
         type={show ? 'text' : 'password'}
@@ -49,20 +49,20 @@ function PasswordInput({ value, onChange, placeholder, autoComplete, id }) {
         required
         autoComplete={autoComplete || 'current-password'}
         style={{
-          width: '100%', background: '#17171a', border: '1px solid #2e2e36',
-          borderRadius: 10, color: '#f0eff5', fontSize: 14, padding: '11px 42px',
+          width: '100%', background: 'var(--bg3)', border: '1px solid var(--border)',
+          borderRadius: 10, color: 'var(--text)', fontSize: 14, padding: '11px 42px',
           outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit',
           transition: 'border-color 0.2s',
         }}
-        onFocus={e => e.target.style.borderColor = '#7c6af7'}
-        onBlur={e => e.target.style.borderColor = '#2e2e36'}
+        onFocus={e => e.target.style.borderColor = 'var(--accent)'}
+        onBlur={e => e.target.style.borderColor = 'var(--border)'}
       />
       <button
         type="button"
         onClick={() => setShow(v => !v)}
         style={{
           position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-          background: 'none', border: 'none', color: '#5c5b6e', cursor: 'pointer',
+          background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer',
           display: 'flex', padding: 4,
         }}
       >
@@ -160,9 +160,9 @@ export default function AuthScreen() {
   return (
     <div style={{
       position: 'fixed', inset: 0,
-      background: '#0a0a0d',
+      background: 'var(--bg)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
-      fontFamily: "'DM Sans', system-ui, sans-serif",
+      fontFamily: "var(--font-sans)",
       overflow: 'hidden',
     }}>
       {/* ── Background ambient glows ── */}
@@ -173,21 +173,16 @@ export default function AuthScreen() {
         <div style={{
           position: 'absolute', top: '15%', left: '20%',
           width: 380, height: 380, borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(124,106,247,0.18) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, var(--accent-bg) 0%, transparent 70%)',
           filter: 'blur(40px)',
+          opacity: 0.6,
         }} />
         <div style={{
           position: 'absolute', bottom: '10%', right: '15%',
           width: 300, height: 300, borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(165,148,255,0.12) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, var(--accent-bg) 0%, transparent 70%)',
           filter: 'blur(50px)',
-        }} />
-        <div style={{
-          position: 'absolute', top: '50%', left: '50%',
-          width: 500, height: 500, borderRadius: '50%',
-          transform: 'translate(-50%, -50%)',
-          background: 'radial-gradient(circle, rgba(78,222,128,0.04) 0%, transparent 70%)',
-          filter: 'blur(60px)',
+          opacity: 0.4,
         }} />
       </div>
 
@@ -195,12 +190,11 @@ export default function AuthScreen() {
       <div style={{
         position: 'relative', zIndex: 1,
         width: '100%', maxWidth: 420,
-        background: 'rgba(23,23,26,0.85)',
-        backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(46,46,54,0.8)',
+        background: 'var(--bg2)',
+        border: '1px solid var(--border)',
         borderRadius: 20,
         padding: '36px 36px 32px',
-        boxShadow: '0 32px 80px rgba(0,0,0,0.6)',
+        boxShadow: '0 12px 40px rgba(0,0,0,0.06)',
         animation: 'authFadeIn 0.5s cubic-bezier(.16,1,.3,1) both',
       }}>
 
@@ -208,25 +202,25 @@ export default function AuthScreen() {
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <div style={{
             width: 52, height: 52,
-            background: 'linear-gradient(135deg, #7c6af7, #a594ff)',
+            background: 'linear-gradient(135deg, var(--accent), var(--accent2))',
             borderRadius: 14, margin: '0 auto 16px',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 8px 24px rgba(124,106,247,0.4)',
+            boxShadow: '0 8px 24px rgba(204,91,54,0.15)',
           }}>
             <IconSparkles size={26} color="#fff" />
           </div>
-          <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#f0eff5', letterSpacing: '-0.5px' }}>
+          <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.5px', fontFamily: 'var(--font-serif)' }}>
             The System
           </h1>
-          <p style={{ margin: '6px 0 0', fontSize: 13, color: '#5c5b6e' }}>
+          <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--text2)' }}>
             {isSignIn ? 'Welcome back. Sign in to continue.' : 'Create your account to get started.'}
           </p>
         </div>
 
         {/* Mode tabs */}
         <div style={{
-          display: 'flex', background: '#0f0f11', borderRadius: 12, padding: 4,
-          marginBottom: 24, border: '1px solid #1e1e22',
+          display: 'flex', background: 'var(--bg3)', borderRadius: 12, padding: 4,
+          marginBottom: 24, border: '1px solid var(--border)',
         }}>
           {['signin', 'signup'].map(m => (
             <button
@@ -236,9 +230,9 @@ export default function AuthScreen() {
                 flex: 1, padding: '8px 0', borderRadius: 9, border: 'none',
                 fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s',
                 fontFamily: 'inherit',
-                background: mode === m ? '#7c6af7' : 'transparent',
-                color: mode === m ? '#fff' : '#5c5b6e',
-                boxShadow: mode === m ? '0 2px 8px rgba(124,106,247,0.35)' : 'none',
+                background: mode === m ? 'var(--accent)' : 'transparent',
+                color: mode === m ? '#fff' : 'var(--text2)',
+                boxShadow: mode === m ? '0 2px 8px rgba(204,91,54,0.2)' : 'none',
               }}
             >
               {m === 'signin' ? 'Sign In' : 'Sign Up'}
@@ -257,19 +251,19 @@ export default function AuthScreen() {
           disabled={googleLoading || loading}
           style={{
             width: '100%', padding: '12px 16px',
-            background: '#17171a', border: '1px solid #2e2e36',
-            borderRadius: 12, color: '#f0eff5', fontSize: 14, fontWeight: 600,
+            background: 'var(--bg3)', border: '1px solid var(--border)',
+            borderRadius: 12, color: 'var(--text)', fontSize: 14, fontWeight: 600,
             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
             gap: 10, transition: 'all 0.2s', fontFamily: 'inherit', marginBottom: 20,
             boxSizing: 'border-box',
           }}
           onMouseEnter={e => {
-            e.currentTarget.style.background = '#1e1e22';
-            e.currentTarget.style.borderColor = '#3a3a45';
+            e.currentTarget.style.background = 'var(--bg4)';
+            e.currentTarget.style.borderColor = 'var(--border2)';
           }}
           onMouseLeave={e => {
-            e.currentTarget.style.background = '#17171a';
-            e.currentTarget.style.borderColor = '#2e2e36';
+            e.currentTarget.style.background = 'var(--bg3)';
+            e.currentTarget.style.borderColor = 'var(--border)';
           }}
         >
           {googleLoading ? (
@@ -287,16 +281,16 @@ export default function AuthScreen() {
 
         {/* Divider */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-          <div style={{ flex: 1, height: 1, background: '#2e2e36' }} />
-          <span style={{ fontSize: 12, color: '#5c5b6e', whiteSpace: 'nowrap' }}>or with email</span>
-          <div style={{ flex: 1, height: 1, background: '#2e2e36' }} />
+          <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+          <span style={{ fontSize: 12, color: 'var(--text3)', whiteSpace: 'nowrap' }}>or with email</span>
+          <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
         </div>
 
         {/* Email / Password form */}
         <form onSubmit={isSignIn ? handleSignIn : handleSignUp} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {/* Email */}
           <div style={{ position: 'relative' }}>
-            <IconMail size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#5c5b6e' }} />
+            <IconMail size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text3)' }} />
             <input
               type="email"
               placeholder="name@example.com"
@@ -307,13 +301,13 @@ export default function AuthScreen() {
               name="email"
               autoComplete="email"
               style={{
-                width: '100%', background: '#17171a', border: '1px solid #2e2e36',
-                borderRadius: 10, color: '#f0eff5', fontSize: 14, padding: '11px 14px 11px 42px',
+                width: '100%', background: 'var(--bg3)', border: '1px solid var(--border)',
+                borderRadius: 10, color: 'var(--text)', fontSize: 14, padding: '11px 14px 11px 42px',
                 outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit',
                 transition: 'border-color 0.2s',
               }}
-              onFocus={e => e.target.style.borderColor = '#7c6af7'}
-              onBlur={e => e.target.style.borderColor = '#2e2e36'}
+              onFocus={e => e.target.style.borderColor = 'var(--accent)'}
+              onBlur={e => e.target.style.borderColor = 'var(--border)'}
             />
           </div>
 
@@ -343,13 +337,13 @@ export default function AuthScreen() {
             disabled={loading || googleLoading}
             style={{
               width: '100%', marginTop: 4, padding: '12px',
-              background: 'linear-gradient(135deg, #7c6af7, #a594ff)',
+              background: 'linear-gradient(135deg, var(--accent), var(--accent2))',
               border: 'none', borderRadius: 12, color: '#fff',
               fontSize: 14, fontWeight: 700, cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
               fontFamily: 'inherit', transition: 'all 0.2s', boxSizing: 'border-box',
               opacity: (loading || googleLoading) ? 0.7 : 1,
-              boxShadow: '0 4px 16px rgba(124,106,247,0.35)',
+              boxShadow: '0 4px 16px rgba(204,91,54,0.2)',
             }}
             onMouseEnter={e => { if (!loading && !googleLoading) e.currentTarget.style.transform = 'translateY(-1px)'; }}
             onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; }}
@@ -362,7 +356,7 @@ export default function AuthScreen() {
         </form>
 
         {/* Footer note */}
-        <p style={{ textAlign: 'center', fontSize: 12, color: '#3a3a45', marginTop: 20, marginBottom: 0 }}>
+        <p style={{ textAlign: 'center', fontSize: 12, color: 'var(--text3)', marginTop: 20, marginBottom: 0 }}>
           Your data is encrypted and synced privately to your account.
         </p>
       </div>

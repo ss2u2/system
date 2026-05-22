@@ -1,5 +1,5 @@
 // Local state store with automatic LocalStorage caching and daily reset behavior.
-import { triggerSync } from './sync';
+import { triggerSync, registerStore } from './sync';
 
 const LOCAL_STORAGE_KEY = 'system_app_state';
 
@@ -67,7 +67,15 @@ const defaultState = {
     [getPastDateString(1)]: 100,
   },
   streak: 7,
-  lastActiveDate: new Date().toDateString()
+  lastActiveDate: new Date().toDateString(),
+  deletedIds: {
+    tasks: [],
+    sessions: [],
+    goals: [],
+    journals: [],
+    workoutRoutines: [],
+    workoutLogs: []
+  }
 };
 
 function getPastDateString(daysAgo) {
@@ -138,7 +146,7 @@ export const store = {
   getState() {
     return state;
   },
-  setState(newState) {
+  setState(newState, fromRemote = false) {
     state = { ...state, ...newState };
     
     // Save to local cache
@@ -151,8 +159,10 @@ export const store = {
     // Notify React listeners
     listeners.forEach(l => l(state));
     
-    // Trigger Supabase cloud synchronizer
-    triggerSync(state);
+    // Trigger Supabase cloud synchronizer only if not from a remote update
+    if (!fromRemote) {
+      triggerSync(state);
+    }
   },
   subscribe(listener) {
     listeners.push(listener);
@@ -162,3 +172,4 @@ export const store = {
     };
   }
 };
+registerStore(store);

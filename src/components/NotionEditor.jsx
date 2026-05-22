@@ -359,7 +359,7 @@ export default function NotionEditor({ initialContent, onChange }) {
         return (
           <div
             key={block.id}
-            className={`j-block group ${borderCls} ${isCurrentDrag ? 'dragging' : ''}`}
+            className={`j-block group ${borderCls} ${isCurrentDrag ? 'dragging' : ''} ${block.done ? 'done' : ''}`}
             data-type={block.type}
             style={{ paddingLeft: `${(block.indent || 0) * 24}px` }}
             onDragOver={(e) => handleDragOver(idx, e)}
@@ -383,7 +383,7 @@ export default function NotionEditor({ initialContent, onChange }) {
             {/* Block Type Custom Decorators */}
             {block.type === 'todo' && (
               <div 
-                className={`j-todo-cb ${block.done ? 'checked bg-[#7c6af7] border-[#7c6af7]' : ''}`} 
+                className="j-todo-cb" 
                 onClick={() => toggleTodoDone(idx)}
               >
                 {block.done && <IconCheck size={10} className="text-white" style={{ display: 'block' }} />}
@@ -400,14 +400,14 @@ export default function NotionEditor({ initialContent, onChange }) {
             )}
 
             {block.type === 'bullet' && (
-              <div className="mr-2 text-[#9b9aab] text-lg leading-tight select-none">•</div>
+              <div className="mr-2 text-[var(--text3)] text-lg leading-tight select-none">•</div>
             )}
 
             {/* Content Editable Area */}
             {block.type !== 'toc' ? (
               <div
                 ref={el => refs.current[block.id] = el}
-                className={`j-content focus:outline-none ${block.done ? 'line-through text-[#5c5b6e]' : ''}`}
+                className="j-content focus:outline-none"
                 contentEditable
                 suppressContentEditableWarning
                 data-placeholder="Type '/' for commands"
@@ -458,7 +458,7 @@ export default function NotionEditor({ initialContent, onChange }) {
       {/* Hovering Slash command menu */}
       {slashMenu.active && (
         <div 
-          className="slash-menu active border border-[#3a3a45]"
+          className="slash-menu active"
           style={{ 
             left: `${Math.min(slashMenu.x, window.innerWidth - 240)}px`, 
             top: `${slashMenu.y}px` 
